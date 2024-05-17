@@ -1,5 +1,8 @@
 # Supervised Learning
 
+[![hackmd-github-sync-badge](https://hackmd.io/UYVlCTTJTkGVYQa5O9x6lg/badge)](https://hackmd.io/UYVlCTTJTkGVYQa5O9x6lg)
+
+
 **Note:** See Sect. 3 of cl_en.pdf in Computational Intelligence course for introduction on Linear Regression.
 ## 1. Linear Regression
 
