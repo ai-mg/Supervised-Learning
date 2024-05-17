@@ -237,14 +237,15 @@ plt.show()
 ### Choice of Width
 The choice of width ($s$) for the sigmoid functions in a design matrix heavily depends on the desired sensitivity and overlap of the basis functions across the input range. The two formulas you're comparing are strategies for defining how quickly the sigmoid function transitions from its lower asymptote near 0 to its upper asymptote near 1, across the input domain defined from $x_{\text{min}}$ to $x_{\text{max}}$. Here's an explanation of each approach:
 
-#### Formula 1: $(x_{\text{max}} - x_{\text{min}}) / (\text{nr_basis_functions} - 1) / 2$
+#### Formula 1: $(x_{\text{max}} - x_{\text{min}}) / (\text{nbf} - 1) / 2$
+Note: nbf refers to nr_basis_functions
 
 This formula effectively sets the width of each sigmoid to half the average distance between the centers of adjacent sigmoid functions. The rationale behind dividing by 2 is to ensure that each sigmoid function reaches about halfway to its midpoint at the location of the next center. This approach has several implications:
 
 - **Overlap**: There is significant overlap between adjacent sigmoid functions, which ensures smoother transitions and a more gradual change in contributions from one basis function to the next across the range of input values.
 - **Sensitivity**: The functions are less sensitive to small changes in input values because the transition region is broader. This can be beneficial when you want to avoid rapid changes in the output of the model due to small fluctuations in input.
 
-#### Formula 2: $(x_{\text{max}} - x_{\text{min}}) / (\text{nr_basis_functions} - 1)$
+#### Formula 2: $(x_{\text{max}} - x_{\text{min}}) / (\text{nbf} - 1)$
 
 This version sets the width equal to the average distance between the centers of adjacent sigmoid functions. Here, each sigmoid will transition from near 0 to near 1 right around the point where the next sigmoid center is located, assuming minimal overlap at the steepest part of each sigmoid. Key characteristics include:
 
@@ -275,35 +276,27 @@ A few approaches to define the width of sigmoidal basis functions, which can be 
 A simple and straightforward approach is to use a fixed width for all sigmoid functions across the input space. This method is easy to implement and interpret but may not be flexible enough to model data with varying scales or complexities effectively.
 
 - **Formula**: 
-  $$
-  s = \text{constant}
-  $$
+  $$s = \text{constant}$$
 
 #### ii. **Proportional to the Range of Data**
 Adjusting the width in proportion to the overall range of the input data ensures that the sigmoid functions are scaled appropriately relative to the variability in the data.
 
 - **Formula**:
-  $$
-  s = \frac{x_{\max} - x_{\min}}{k}
-  $$
+  $$s = \frac{x_{\max} - x_{\min}}{k}$$
   where $k$ is a scaling factor that can be tuned based on the data distribution.
 
 #### iii. **Proportional to the Distance Between Centers**
 Another common approach is to set the width relative to the distance between the centers of adjacent sigmoid functions. This method helps to control the overlap between the functions, ensuring smooth transitions and sufficient coverage across the input domain.
 
 - **Formula**:
-  $$
-  s = \frac{c_{i+1} - c_i}{k}
-  $$
+  $$s = \frac{c_{i+1} - c_i}{k}$$
   where $c_i$ are the centers and $k$ is a factor controlling the degree of overlap (typically $k = 2$ to $k = 4$).
 
 #### iv. **Based on Percentile Ranges**
 In datasets with outliers or heavy tails, using percentile ranges (such as interquartile range) to determine the width can help in focusing the sigmoid functions on the most dense parts of the data distribution, thereby avoiding undue influence from extreme values.
 
 - **Formula**:
-  $$
-  s = \frac{\text{percentile}(X, 75) - \text{percentile}(X, 25)}{k}
-  $$
+  $$s = \frac{\text{percentile}(X, 75) - \text{percentile}(X, 25)}{k}$$
   This method uses the interquartile range scaled by a factor $k$ to adjust sensitivity.
 
 #### v. **Adaptive Width**
